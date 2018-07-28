@@ -1,0 +1,38 @@
+{
+  "1": {
+    "id": 1,
+    "label": "You",
+    "type": "main",
+    "parents": [2, 3],
+    "params": {
+      "optimization": "cheapest"
+    }
+  },
+  "2": {
+    "id": 2,
+    "label": "Gene99",
+    "type": "commercial",
+    "parents": [],
+    "params": {
+      "price": 0.6,
+      "lead_time": 10
+    }
+  },
+  "3": {
+    "id": 3,
+    "label": "Gibson Station",
+    "type": "assembly",
+    "parents": [4],
+    "params": {}
+  },
+  "4": {
+    "id": 4,
+    "label": "Twix",
+    "type": "commercial",
+    "parents": [],
+    "params": {
+      "price": 0.6,
+      "lead_time": 10
+    }
+  }
+}

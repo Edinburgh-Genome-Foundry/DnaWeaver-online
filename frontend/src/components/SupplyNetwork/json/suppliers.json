@@ -1,0 +1,47 @@
+{
+  "default": {
+    "isDeletable": true,
+    "acceptsParents": true,
+    "hasParams": true,
+    "suppliers": ["commercial", "library", "comparator", "assembly", "pcr"],
+    "color": "#2f3246"
+  },
+  "main": {
+    "isDeletable": false,
+    "icon": "user-circle",
+    "hasParams": false,
+    "defaultForm": {
+      "optimization": "price",
+      "max_lead_time": 20,
+      "max_budget": 5000
+    }
+  },
+  "commercial": {
+    "acceptsParents": false,
+    "icon": "shopping-cart",
+    "defaultLabel": "Company",
+    "defaultForm": {
+      "price": 0.6,
+      "lead_time": 10
+    }
+  },
+  "assembly": {
+    "icon": "flask",
+    "defaultLabel": "Assembly station"
+  },
+  "library": {
+    "acceptsParents": false,
+    "icon": "book",
+    "defaultLabel": "Library"
+  },
+  "pcr": {
+    "icon": "recycle",
+    "defaultLabel": "PCR station",
+    "suppliers": ["commercial", "comparator"]
+  },
+  "comparator": {
+    "icon": "code-branch",
+    "hasParams": false,
+    "defaultLabel": "Comparator"
+  }
+}

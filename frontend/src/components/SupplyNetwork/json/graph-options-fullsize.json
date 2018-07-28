@@ -1,0 +1,16 @@
+{
+  "dagre": {
+    "ranksep": 30,
+    "nodesep": 30
+  },
+  "nodes": {
+    "showLabels": true,
+    "allowParameterChanges": true,
+    "allowGraphChanges": true,
+    "showToolbar": true,
+    "size": {
+      "width": 139,
+      "height": 90
+    }
+  }
+}
