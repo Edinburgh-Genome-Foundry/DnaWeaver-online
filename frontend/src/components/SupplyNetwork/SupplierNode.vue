@@ -1,8 +1,8 @@
 <template lang='pug'>
 
 .node(:style="nodeStyle")
-  el-popover(ref='chooseParents', placement='bottom', width='400px', trigger='click')
-    .parents-form
+  el-popover(ref='chooseSuppliers', placement='bottom', width='400px', trigger='click')
+    .suppliers-form
       h4 Create a new supplier
       span.button-span.create-suppliers-button(v-for='data, type in suppliersInfos', :key='type',
                        v-if="nodeInfos.suppliers.indexOf(type) > -1")
@@ -11,14 +11,14 @@
             font-awesome-icon(:icon='data.icon')
       div(style="display: block;height: 20px")
       h4 Or select existing suppliers
-      el-select(v-model='nodeData.parents' multiple, placeholder='Select suppliers')
+      el-select(v-model='nodeData.suppliers' multiple, placeholder='Select suppliers')
         el-option(v-for='node in nodes', :key='node.id', :value='node.id', :label='node.label'
                   v-if='notAChild[node.id]')
-  el-popover(ref='chooseParams', placement='bottom', width='350', trigger='click')
-    .form(:is="formComponent", v-model='nodeData.params')
+  el-popover(ref='chooseParameters', placement='bottom', width='350', trigger='click')
+    .form(:is="formComponent", v-model='nodeData.parameters')
 
   font-awesome-icon.icon(:icon='nodeInfos.icon')
-  input.label(v-if='options.showLabels' v-model='nodeData.label', :style='{color: nodeInfos.color}')
+  input.label(v-if='options.showLabels' v-model='nodeData.name', :style='{color: nodeInfos.color}')
   .toolbar(v-if='options.showToolbar')
     el-button-group
       el-tooltip(class="item" effect="light", content="delete", placement="bottom")
@@ -28,10 +28,10 @@
                   icon='el-icon-delete'
                   c)
       el-tooltip(class="item" effect="light", content='suppliers', placement="bottom")
-        <el-button v-if='nodeInfos.acceptsParents' icon='el-icon-share' v-popover:chooseParents>
+        <el-button v-if='nodeInfos.acceptsSuppliers' icon='el-icon-share' v-popover:chooseSuppliers>
         </el-button>
       el-tooltip(class="item" effect="light", content='options', placement="bottom")
-        <el-button size='tiny' v-if='nodeInfos.hasParams' v-popover:chooseParams title='options'>
+        <el-button size='tiny' v-if='nodeInfos.hasParameters' v-popover:chooseParameters title='options'>
           <font-awesome-icon icon='list'/>
         </el-button>
 </template>
@@ -43,7 +43,8 @@ const suppliersForms = {
   'commercial': require('./supplier-forms/Commercial.vue').default,
   'main': require('./supplier-forms/Main.vue').default,
   'assembly': require('./supplier-forms/Assembly.vue').default,
-  'pcr': require('./supplier-forms/PCR.vue').default
+  'pcr': require('./supplier-forms/PCR.vue').default,
+  'library': require('./supplier-forms/Library.vue').default
 }
 
 export default {
@@ -53,7 +54,7 @@ export default {
     options: {default: () => ({})}
   },
   data () {
-    console.log('PARAAAAMS', this.value.params)
+    console.log('PARAAAAMS', this.value.parameters)
     return {
       nodeData: this.value,
       nodeInfos: Object.assign({}, suppliersInfos.default, suppliersInfos[this.value.type]),
@@ -78,8 +79,8 @@ export default {
         children[nid] = []
       })
       for (var nid in this.nodes) {
-        for (var parentid of this.nodes[nid].parents) {
-          children[parentid].push(nid)
+        for (var supplierId of this.nodes[nid].suppliers) {
+          children[supplierId].push(nid)
         }
       }
       function rec (nid) {
@@ -165,7 +166,7 @@ hr.pencil {
 
 <style lang='scss'>
 
-.parents-form {
+.suppliers-form {
   font-family: 'Open Sans';
   text-align: center !important;
   h4 {

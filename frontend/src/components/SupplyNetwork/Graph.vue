@@ -52,7 +52,7 @@ export default {
           width: this.options.nodes.size.width,
           height: this.options.nodes.size.height
         })
-        for (var sourceId of node.parents) {
+        for (var sourceId of node.suppliers) {
           g.setEdge(sourceId, nodeId)
           console.log(sourceId, nodeId)
         }
@@ -92,19 +92,19 @@ export default {
     },
     newConnectingNode (data) {
       var newId = uuidv1()
-      this.nodes[data.connectsTo].parents.push(newId)
+      this.nodes[data.connectsTo].suppliers.push(newId)
       this.$set(this.nodes, newId, {
         id: newId,
-        label: suppliersInfos[data.type].defaultLabel,
+        name: suppliersInfos[data.type].defaultName,
         type: data.type,
-        parents: [],
-        params: suppliersInfos[data.type].defaultForm
+        suppliers: [],
+        parameters: JSON.parse(JSON.stringify(suppliersInfos[data.type].defaultParameters))
       })
     },
     deleteNode (nodeId) {
       var self = this
       Object.keys(this.nodes).map(function (nId) {
-        self.nodes[nId].parents = self.nodes[nId].parents.filter((i) => (i !== nodeId))
+        self.nodes[nId].suppliers = self.nodes[nId].suppliers.filter((i) => (i !== nodeId))
       })
       this.$delete(this.nodes, nodeId)
     }
@@ -118,6 +118,12 @@ export default {
       handler (value) {
         this.$emit('input', value)
         this.updateLayout()
+      }
+    },
+    value: {
+      deep: true,
+      handler (val) {
+        this.nodes = val
       }
     }
   },
@@ -142,7 +148,7 @@ export default {
     margin-left: auto;
     margin-right: auto;
     text-align: center;
-    transition: width 1s, height 1s;
+    transition: width 1s;
     path {
       transition: d 0.5s;
     }

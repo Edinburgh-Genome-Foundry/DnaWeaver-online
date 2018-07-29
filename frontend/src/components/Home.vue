@@ -1,15 +1,44 @@
 <template lang='pug'>
 .page
+  .graphio
+    el-tooltip(class="item" content="Save current state" placement="bottom")
+      el-button.file-link(
+        @click="download(JSON.stringify(form, null, ' '), 'dnaweaver_state.json')" icon='el-icon-download'
+        circle)
+    el-tooltip(class="item" content="Load a saved state" placement="bottom")
+      el-button.file-link(
+        @click='uploadStateDialogVisible = true'
+        icon='el-icon-upload2'
+        circle)
+    el-tooltip(class="item" content="Load an example" placement="bottom")
+      el-button.file-link(
+        @click=''
+        icon='el-icon-more'
+        circle)
+    el-dialog(title="", :visible.sync="uploadStateDialogVisible" width="80%")
+      center
+        h4 Upload a saved state
+        el-upload(:file-list='stateUploadFile',
+            :on-change='parseUploadedState',
+            :multiple='false',
+            :auto-upload="false",
+            action=''
+            drag)
+          i.el-icon-upload
+          .el-upload__text Drop a JSON file here or <em>click to upload</em>
+    el-dialog(title="", :visible.sync="examplesDialogVisible" width="80%")
+      center
+        h4 Upload a saved state
+        el-upload(:file-list='stateUploadFile',
+          :on-change='parseUploadedState',
+          :multiple='false',
+          :auto-upload="false",
+          action=''
+          drag)
+          i.el-icon-upload
+          .el-upload__text Drop a JSON file here or <em>click to upload</em>
   .graph
     graph(v-model='form.graph', :options='options')
-  .graphio
-    el-button-group
-      el-tooltip(class="item" content="Download this graph" placement="bottom")
-        el-button.file-link(@click='downloadForm' icon='el-icon-download' circle)
-      el-tooltip(class="item" content="Upload a graph" placement="bottom")
-        el-button.file-link(@click='downloadForm' icon='el-icon-upload2' circle)
-      el-tooltip(class="item" content="Load an example" placement="bottom")
-        el-button.file-link(@click='downloadJson' icon='el-icon-more' circle)
   .form
     el-form(label-width='120px')
       el-form-item(label='Optimization')
@@ -17,17 +46,43 @@
           el-option(value='cheapest', label='Cheapest plan')
           el-option(value='cheapest_with_deadline', label='Cheapest with deadline')
           el-option(value='fastest_under_budget', label='Fastest under budget')
-      el-form-item(v-if="form.optimization == 'cheapest_with_deadline'" label='Deadline')
+      el-form-item(
+        v-if="form.optimization == 'cheapest_with_deadline'"
+        label='Deadline (days)')
         el-input-number(size='small' v-model='form.deadline')
-      el-form-item(v-if="form.optimization == 'fastest_under_budget'" label='Deadline')
+      el-form-item(
+        v-if="form.optimization == 'fastest_under_budget'"
+        label='Budget ($)')
         el-input-number(size='small' v-model='form.budget')
-    p.hello-there(v-if='budget >= 50000').
+    p.hello-there(v-if='form.budget >= 50000').
       Oh hello there ! Sounds like an interesting project.
-      We should
-      #[a(href="mailto:egf@ed.ac.uk?Subject=Let's%20talk%20about%20my%20project') get in touch.")]
+      We should <a href="mailto:egf@ed.ac.uk?subject=Let's talk about my project"> get in touch.</a>
+    h3 Upload a sequence
     files-uploader(v-model="form.sequence_file", :multiple='false')
-  .querier
-    backend-querier
+
+    backend-querier(
+      :form='form',
+      :backendUrl='infos.backendUrl',
+      :validateForm='validateForm',
+      submitButtonText='Design',
+      v-model='queryStatus')
+    el-alert(v-if='queryStatus.requestError', :title="queryStatus.requestError",
+             type="error", :closable="false")
+
+      progress-bars(:bars='queryStatus.polling.data.bars', :order="['radius']"
+                    v-if='queryStatus.polling.inProgress && queryStatus.polling.data')
+
+      el-alert(v-show='queryStatus.requestError  && !queryStatus.polling.inProgress',
+               :title="queryStatus.requestError",
+               type="error",
+               :closable="false")
+
+    .results(v-if='!queryStatus.polling.inProgress && queryStatus.polling.data')
+      .assembly-stats
+        p Total cost: {{queryStatus.result.assembly_tree.price}}
+      download-button(v-if='queryStatus.result.zip_file',
+                      :filedata='queryStatus.result.zip_file')
+
 </template>
 
 <script>
@@ -35,19 +90,34 @@ import graph from './SupplyNetwork/Graph'
 import download from 'downloadjs'
 const defaultGraph = require('./SupplyNetwork/json/default-graph.json')
 const defaultOptions = require('./SupplyNetwork/json/graph-options-fullsize.json')
+var infos = {
+  title: 'Generic Solver',
+  navbarTitle: 'Generic Solver',
+  path: 'generic_solver',
+  description: '',
+  backendUrl: 'start/generic_solver'
+}
 
 export default {
   name: 'Home',
   data () {
     return {
-      options: JSON.parse(JSON.stringify(defaultOptions)),
       form: {
         graph: JSON.parse(JSON.stringify(defaultGraph)),
         sequence_file: null,
         optimization: 'cheapest',
         deadline: 10,
-        budget: 2000,
-
+        budget: 2000
+      },
+      uploadStateDialogVisible: false,
+      examplesDialogVisible: false,
+      stateUploadFile: [],
+      options: JSON.parse(JSON.stringify(defaultOptions)),
+      infos: infos,
+      queryStatus: {
+        polling: {},
+        result: {},
+        requestError: ''
       }
     }
   },
@@ -55,8 +125,17 @@ export default {
     graph
   },
   methods: {
-    downloadJson () {
-      download(JSON.stringify(this.graph, null, ' '), 'design.json')
+    download,
+    parseUploadedState (evt) {
+      var reader = new FileReader()
+      var self = this
+      reader.onload = function (e) {
+        console.log(JSON.parse(e.target.result))
+        self.form = JSON.parse(e.target.result)
+        self.stateUploadFile = []
+        self.uploadStateDialogVisible = false
+      }
+      reader.readAsBinaryString(evt.raw)
     },
     handlePreview (file) {
       var self = this
@@ -70,6 +149,9 @@ export default {
         }
       }
       reader.readAsDataURL(file.raw)
+    },
+    validateForm () {
+      return []
     }
   }
 }
@@ -95,6 +177,7 @@ a {
 .page {
   .graphio {
     text-align: center;
+    margin-bottom: 20px;
   }
   .sequence-upload {
     text-align: center;
@@ -106,9 +189,18 @@ a {
     text-align: center;
     max-width: 500px;
   }
+
   .form {
-    margin: 20px auto;
-    width: 500px;
+    text-align: center;
+    .el-form {
+      display: inline-block;
+      /deep/ .el-form-item__content {
+        text-align: left;
+      }
+    }
+  }
+  .hello-there {
+    font-size: 0.8em;
   }
 }
 

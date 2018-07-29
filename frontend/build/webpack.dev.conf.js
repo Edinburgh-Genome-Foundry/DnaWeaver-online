@@ -31,12 +31,6 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     hot: true,
     contentBase: false, // since we use CopyWebpackPlugin.
     compress: true,
-    headers: {
-      "Access-Control-Allow-Origin": "http://localhost:8080",
-      "Access-Control-Allow-Credentials": "true",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization, x-id, Content-Length, X-Requested-With",
-      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS"
-    },
     host: HOST || config.dev.host,
     port: PORT || config.dev.port,
     open: config.dev.autoOpenBrowser,
@@ -48,7 +42,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     quiet: true, // necessary for FriendlyErrorsPlugin
     watchOptions: {
       poll: config.dev.poll,
-    }
+    },
+    disableHostCheck: true
   },
   plugins: [
     new webpack.DefinePlugin({

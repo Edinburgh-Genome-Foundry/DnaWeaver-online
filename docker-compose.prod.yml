@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  django:
+    environment:
+      - DEBUG=False
+
+  rqworker:
+    environment:
+      - DEBUG=False
+
+  vue:
+    restart: 'no'
+    command: bash -c "npm run build && echo 'Vue will now stop.'"
+    volumes:
+      - website-dist:/code/dist
+
+  nginx:
+    volumes:
+      - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf
+      - website-dist:/website
+      - /cert:/cert
+
+volumes:
+     website-dist:
