@@ -27,6 +27,8 @@ class worker_class(AsyncWorker):
         record = records_from_data_files([data.sequence_file])[0]
         sequence = str(record.seq)
 
+        self.logger(message="Loading the supply graph")
+
         def sort_suppliers(graph_data):
             supply_graph = nx.DiGraph([
                 (supplier, supplier_id)
@@ -48,20 +50,23 @@ class worker_class(AsyncWorker):
 
         suppliers_dict = {}
         for supplier_id in sorted_suppliers:
-            supplier = data['graph'][supplier_id]
-            supplier['parameters']["name"] = supplier["name"]
-            supplier['parameters']['suppliers'] = [
+            supplier_data = data['graph'][supplier_id]
+            supplier_data['parameters']["name"] = supplier_data["name"]
+            supplier_data['parameters']['suppliers'] = [
                 suppliers_dict[supp_id]
-                for supp_id in supplier['suppliers']
+                for supp_id in supplier_data['suppliers']
             ]
-            suppliers_dict[supplier_id] = {
+            supplier = suppliers_dict[supplier_id] = {
                 'commercial':  CommercialDnaOffer,
                 'assembly': DnaAssemblyStation,
                 'library': PartsLibrary,
                 'pcr': PcrOutStation,
                 'comparator': DnaSourcesComparator,
                 'main': DnaSourcesComparator
-            }[supplier["type"]].from_dict(supplier['parameters'])
+            }[supplier_data["type"]].from_dict(supplier_data['parameters'])
+            if (supplier_data["type"] == 'assembly'):
+                supplier.solve_kwargs['logger'] = self.logger
+        self.logger(message="Exploring strategies...")
         main = suppliers_dict[main_id]
         quote = main.get_quote(sequence, with_assembly_plan=True)
         quote.compute_full_assembly_tree()
@@ -70,8 +75,8 @@ class worker_class(AsyncWorker):
         autocolor_quote_sources(json_quote)
         report_data = make_folder_report(json_quote, target='@memory')
         return {
-            'quote_tree': json_quote.tree,
-            'zip_file': {
+            'assembly_tree': json_quote.tree,
+            'assembly_report': {
                 'data': data_to_html_data(report_data, 'zip'),
                 'name': 'sequence_decomposition_report.zip',
                 'mimetype': 'application/zip'

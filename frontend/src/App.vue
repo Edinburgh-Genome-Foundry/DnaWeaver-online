@@ -38,4 +38,12 @@ body {
   color: #2c3e50;
   margin-top: 60px;
 }
+
+hr {
+    border : 0;
+    height: 1px;
+    margin-top: 60px;
+    margin-bottom: 60px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+}
 </style>

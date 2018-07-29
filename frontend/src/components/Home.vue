@@ -60,29 +60,32 @@
     h3 Upload a sequence
     files-uploader(v-model="form.sequence_file", :multiple='false')
 
-    backend-querier(
-      :form='form',
-      :backendUrl='infos.backendUrl',
-      :validateForm='validateForm',
-      submitButtonText='Design',
-      v-model='queryStatus')
-    el-alert(v-if='queryStatus.requestError', :title="queryStatus.requestError",
-             type="error", :closable="false")
+    .querier(style='max-width: 400px; width: 90%')
+      backend-querier(
+        :form='form',
+        :backendUrl='infos.backendUrl',
+        :validateForm='validateForm',
+        submitButtonText='Design',
+        v-model='queryStatus')
+  el-alert(v-show='queryStatus.requestError  && !queryStatus.polling.inProgress',
+           :title="queryStatus.requestError",
+           type="error",
+             :closable="false")
 
-      progress-bars(:bars='queryStatus.polling.data.bars', :order="['radius']"
-                    v-if='queryStatus.polling.inProgress && queryStatus.polling.data')
+  progress-bars(:bars='queryStatus.polling.data.bars', :order="orderedProgressBars",
+                v-if='queryStatus.polling.inProgress && queryStatus.polling.data')
 
-      el-alert(v-show='queryStatus.requestError  && !queryStatus.polling.inProgress',
-               :title="queryStatus.requestError",
-               type="error",
-               :closable="false")
+  .results(v-if='!queryStatus.polling.inProgress && queryStatus.polling.data')
+    hr
+    h2 Assembly Plan
+    .assembly-stats
+      p Total cost: {{queryStatus.result.assembly_tree.price}} $
+      p Lead time: {{queryStatus.result.assembly_tree.lead_time}} days
+      p Complexity: {{assemblyTreeOperations}} operations
 
-    .results(v-if='!queryStatus.polling.inProgress && queryStatus.polling.data')
-      .assembly-stats
-        p Total cost: {{queryStatus.result.assembly_tree.price}}
-      download-button(v-if='queryStatus.result.zip_file',
-                      :filedata='queryStatus.result.zip_file')
-
+    download-button(v-if='queryStatus.result.assembly_report',
+                    text='Full assembly report',
+                    :filedata='queryStatus.result.assembly_report')
 </template>
 
 <script>
@@ -153,6 +156,30 @@ export default {
     validateForm () {
       return []
     }
+  },
+  computed: {
+    assemblyTreeOperations () {
+      if (!this.queryStatus.result) {
+        return 0
+      }
+      var total = 0
+      function explore (plan) {
+        total++
+        if (plan.assembly_plan) {
+          plan.assembly_plan.map(explore)
+        }
+      }
+      explore(this.queryStatus.result.assembly_tree)
+      return total
+    },
+    orderedProgressBars () {
+      if (this.queryStatus.polling.data) {
+        console.log(this.queryStatus.polling, Object.keys(this.queryStatus.polling.data.bars))
+        return Object.keys(this.queryStatus.polling.data.bars)
+      } else {
+        return []
+      }
+    }
   }
 }
 </script>
@@ -201,6 +228,10 @@ a {
   }
   .hello-there {
     font-size: 0.8em;
+  }
+  .results {
+    text-align: center;
+    margin-top: 50px;
   }
 }
 

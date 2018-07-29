@@ -139,8 +139,11 @@ export default {
 
   // margin: 0 auto;
   .path {
-    stroke: black;
     fill: none;
+    transition: d 0.5s;
+    stroke-linejoin: round;
+    stroke-width: 3;
+    stroke: #aaa;
   }
   svg {
     // display:block;
@@ -150,7 +153,7 @@ export default {
     text-align: center;
     transition: width 1s;
     path {
-      transition: d 0.5s;
+
     }
   }
   .svg-elements-move {
