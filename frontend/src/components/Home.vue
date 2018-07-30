@@ -52,8 +52,14 @@
                        fileHref='/static/examples/domestication/domestication.json',
                        imgSrc='/static/examples/domestication/domestication.png')
             p.
-              A very simple example for quick tests. One sequence, one bit of which can be
-              synthesized by a company, and the other bit by other.
+              DNA Weaver can be used for many things, at the condition of designing
+              the right supply network. Here we show how to use DNA Weaver to create
+              PCR plans for part domestication.
+              A gene sequence of E. coli has been optimized to be rid of two BsmBI
+              sites in the wildtype sequence. We will construct the optimized gene
+              by assembling 3 PCR products from the E. coli chromosome. The PCRs
+              are done with custom primers whose non-annealing parts incur sequence
+              modifications and remove the BsmBI sites via synonymous codon juggling. 
   .graph
     graph(v-model='form.graph', :options='options')
   .form
