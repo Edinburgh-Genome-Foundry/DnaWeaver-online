@@ -59,7 +59,7 @@
               sites in the wildtype sequence. We will construct the optimized gene
               by assembling 3 PCR products from the E. coli chromosome. The PCRs
               are done with custom primers whose non-annealing parts incur sequence
-              modifications and remove the BsmBI sites via synonymous codon juggling. 
+              modifications and remove the BsmBI sites via synonymous codon juggling.
   .graph
     graph(v-model='form.graph', :options='options')
   .form
