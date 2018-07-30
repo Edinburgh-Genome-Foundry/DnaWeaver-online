@@ -46,4 +46,8 @@ hr {
     margin-bottom: 60px;
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
 }
+
+a {
+  color: rgb(98, 158, 237) !important;
+}
 </style>

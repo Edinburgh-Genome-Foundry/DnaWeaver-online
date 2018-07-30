@@ -36,7 +36,11 @@
       "overhang_size_range": [15, 30],
       "max_fragments": 10,
       "enzyme": "BmsBI",
-      "fragments_size_range": [100, 5000]
+      "fragments_size_range": [100, 5000],
+      "use_astar": true,
+      "grain_type": "auto",
+      "coarse_grain": 100,
+      "fine_grain": 10
     }
   },
   "4": {

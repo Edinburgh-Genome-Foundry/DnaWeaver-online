@@ -7,7 +7,7 @@
       el-input-number(size='small', v-model='form.cost_per_bp', :step='0.05',
                       :min='0.01', :max='2.0')
     el-form-item(label='Size range (bp)')
-      detail-slider(v-model='form.size_range', :step="10", :min='10', :max='4000')
+      detail-slider(v-model='form.size_range', :step="5", :min='10', :max='7000')
     el-form-item(label='Valid GC%')
       detail-slider(v-model='form.gc_range', :step="1", :min='0', :max='100')
     el-form-item(label='Forbidden patterns')

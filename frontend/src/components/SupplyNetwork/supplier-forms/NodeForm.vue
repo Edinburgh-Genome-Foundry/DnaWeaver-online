@@ -18,3 +18,8 @@ export default {
   }
 }
 </script>
+<style lang='scss' scoped>
+/deep/ .el-form-item {
+  margin-bottom: 4px;
+}
+</style>

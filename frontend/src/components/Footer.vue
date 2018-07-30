@@ -7,11 +7,11 @@ footer
 
 <style scoped>
 footer {
-  position: absolute;
-  bottom: -50px;
+  position: relative;
+  margin-top: 100px;
   width: 100%;
   height: 40px;
-  background-color: #fbfbfb;
+  color: #cbcbcb;
   text-align: center;
 }
 </style>

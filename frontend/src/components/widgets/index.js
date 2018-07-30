@@ -8,6 +8,6 @@ export default function install (Vue) {
   Vue.component('detail-slider', require('./DetailSlider').default)
 
   // Vue.component('collapsible', require('./Collapsible').default)
-  // Vue.component('file-example', require('./FileExample').default)
+  Vue.component('file-example', require('./FileExample').default)
   // Vue.component('web-links', require('./WebLinks').default)
 }

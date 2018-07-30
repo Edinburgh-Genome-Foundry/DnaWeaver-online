@@ -6,15 +6,15 @@
       h4 Create a new supplier
       span.button-span.create-suppliers-button(v-for='data, type in suppliersInfos', :key='type',
                        v-if="nodeInfos.suppliers.indexOf(type) > -1")
-        el-tooltip(class="item" effect="light", :content="data.defaultLabel" placement="top")
+        el-tooltip(class="item" effect="light", :content="data.defaultName" placement="top")
           el-button(@click="$emit('newConnectingNode', {type, connectsTo: nodeData.id})" circle)
             font-awesome-icon(:icon='data.icon')
       div(style="display: block;height: 20px")
       h4 Or select existing suppliers
       el-select(v-model='nodeData.suppliers' multiple, placeholder='Select suppliers')
-        el-option(v-for='node in nodes', :key='node.id', :value='node.id', :label='node.label'
+        el-option(v-for='node in nodes', :key='node.id', :value='node.id', :label='node.name'
                   v-if='notAChild[node.id]')
-  el-popover(ref='chooseParameters', placement='bottom', width='350', trigger='click')
+  el-popover(ref='chooseParameters', placement='bottom', width='450', trigger='click')
     .form(:is="formComponent", v-model='nodeData.parameters')
 
   font-awesome-icon.icon(:icon='nodeInfos.icon')

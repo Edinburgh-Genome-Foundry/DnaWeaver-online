@@ -12,7 +12,7 @@
         circle)
     el-tooltip(class="item" content="Load an example" placement="bottom")
       el-button.file-link(
-        @click=''
+        @click='examplesDialogVisible = true'
         icon='el-icon-more'
         circle)
     el-dialog(title="", :visible.sync="uploadStateDialogVisible" width="80%")
@@ -28,15 +28,32 @@
           .el-upload__text Drop a JSON file here or <em>click to upload</em>
     el-dialog(title="", :visible.sync="examplesDialogVisible" width="80%")
       center
-        h4 Upload a saved state
-        el-upload(:file-list='stateUploadFile',
-          :on-change='parseUploadedState',
-          :multiple='false',
-          :auto-upload="false",
-          action=''
-          drag)
-          i.el-icon-upload
-          .el-upload__text Drop a JSON file here or <em>click to upload</em>
+        .div(style='max-width:800px;')
+          file-example(filename='Basic Example',
+                         @input="loadExample",
+                         fileHref='/static/examples/basic_example/basic_example.json',
+                         imgSrc='/static/examples/basic_example/basic_example.png')
+            p.
+              A very simple example for quick tests. One sequence, one bit of which can be
+              synthesized by a company, and the other bit by other.
+          file-example(filename='3-step Assembly',
+                       @input="loadExample",
+                       fileHref='/static/examples/three_step/three_step.json',
+                       imgSrc='/static/examples/three_step/three_step.png')
+            p.
+              A 50kb sequence to be built from large fragments or from oligos via a 3-step assembly.
+              Some parts of the sequence can also be obtained from E. coli via PCR.
+              #[a(href="https://www.nature.com/articles/srep10655") Tsuge et al. ]
+              managed to assemble this sequence in a one-step assembly of fifty 1kb
+              fragments, digested by type-IIs enzymes. This required a very careful
+              selection of enzyme overhangs.
+          file-example(filename='Domestication Example',
+                       @input="loadExample",
+                       fileHref='/static/examples/domestication/domestication.json',
+                       imgSrc='/static/examples/domestication/domestication.png')
+            p.
+              A very simple example for quick tests. One sequence, one bit of which can be
+              synthesized by a company, and the other bit by other.
   .graph
     graph(v-model='form.graph', :options='options')
   .form
@@ -65,27 +82,35 @@
         :form='form',
         :backendUrl='infos.backendUrl',
         :validateForm='validateForm',
-        submitButtonText='Design',
+        submitButtonText='Compute an assembly plan',
         v-model='queryStatus')
   el-alert(v-show='queryStatus.requestError  && !queryStatus.polling.inProgress',
            :title="queryStatus.requestError",
            type="error",
-             :closable="false")
+           :closable="false")
 
   progress-bars(:bars='queryStatus.polling.data.bars', :order="orderedProgressBars",
                 v-if='queryStatus.polling.inProgress && queryStatus.polling.data')
 
   .results(v-if='!queryStatus.polling.inProgress && queryStatus.polling.data')
     hr
-    h2 Assembly Plan
-    .assembly-stats
-      p Total cost: {{queryStatus.result.assembly_tree.price}} $
-      p Lead time: {{queryStatus.result.assembly_tree.lead_time}} days
-      p Complexity: {{assemblyTreeOperations}} operations
+    p(v-if='!queryStatus.result.accepted').
+      No assembly plan found. Try editing the sequence or the supply graph.
+    .assembly-plan(v-if='queryStatus.result.accepted')
+      h2 Assembly Plan
+      .assembly-stats
+        p Total cost: {{queryStatus.result.assembly_tree.price.toFixed(0)}} $
+        p Lead time: {{queryStatus.result.assembly_tree.lead_time.toFixed(0)}} days
+        p Complexity: {{assemblyTreeOperations}} operations
+      .assembly-figure
+        center
+          img(v-if='queryStatus.result.assembly_figure_data',
+              :src='queryStatus.result.assembly_figure_data',
+              style='max-width: 700px;')
 
-    download-button(v-if='queryStatus.result.assembly_report',
-                    text='Full assembly report',
-                    :filedata='queryStatus.result.assembly_report')
+      download-button(v-if='queryStatus.result.assembly_report',
+                      text='Full assembly report',
+                      :filedata='queryStatus.result.assembly_report')
 </template>
 
 <script>
@@ -133,28 +158,18 @@ export default {
       var reader = new FileReader()
       var self = this
       reader.onload = function (e) {
-        console.log(JSON.parse(e.target.result))
-        self.form = JSON.parse(e.target.result)
         self.stateUploadFile = []
+        self.form = JSON.parse(e.target.result)
         self.uploadStateDialogVisible = false
       }
       reader.readAsBinaryString(evt.raw)
     },
-    handlePreview (file) {
-      var self = this
-      var reader = new window.FileReader()
-      reader.onloadend = function (ev) {
-        if (ev.target.readyState === window.FileReader.DONE) {
-          self.file = {
-            name: name,
-            content: ev.target.result
-          }
-        }
-      }
-      reader.readAsDataURL(file.raw)
-    },
     validateForm () {
       return []
+    },
+    loadExample (file) {
+      this.examplesDialogVisible = false
+      this.form = JSON.parse(atob(file.content.split('base64,')[1]))
     }
   },
   computed: {
@@ -173,9 +188,14 @@ export default {
       return total
     },
     orderedProgressBars () {
-      if (this.queryStatus.polling.data) {
-        console.log(this.queryStatus.polling, Object.keys(this.queryStatus.polling.data.bars))
-        return Object.keys(this.queryStatus.polling.data.bars)
+      if (this.queryStatus.polling.data && this.queryStatus.polling.data.bars) {
+        var result = []
+        Object.keys(this.queryStatus.polling.data.bars).map(function (s) {
+          if (s.indexOf('segment') === -1) {
+            result.push(s)
+          }
+        })
+        return result
       } else {
         return []
       }

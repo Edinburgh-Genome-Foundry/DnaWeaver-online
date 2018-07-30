@@ -1,11 +1,11 @@
 <template lang='pug'>
 el-row
   el-row(:gutter='0')
-    el-col(:span='6'): center: .slider-data {{valueMirror[0]}}
-    el-col(:span='11')
+    el-col(:span='3'): center: .slider-data {{valueMirror[0]}}
+    el-col(:span='17')
       el-slider(size='small', v-model='valueMirror', :step="step", range,
                 :min='min', :max='max')
-    el-col(:span='7'): center: .slider-data {{valueMirror[1]}}
+    el-col(:span='3'): center: .slider-data {{valueMirror[1]}}
 </template>
 <script>
 export default {
