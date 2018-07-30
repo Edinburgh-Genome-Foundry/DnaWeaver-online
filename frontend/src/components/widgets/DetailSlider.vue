@@ -4,7 +4,7 @@ el-row
     el-col(:span='3'): center: .slider-data {{valueMirror[0]}}
     el-col(:span='17')
       el-slider(size='small', v-model='valueMirror', :step="step", range,
-                :min='min', :max='max')
+                :min='min', :max='max', :disabled='disabled')
     el-col(:span='3'): center: .slider-data {{valueMirror[1]}}
 </template>
 <script>
@@ -13,7 +13,8 @@ export default {
     value: {default: () => ([0, 10])},
     min: {default: 0},
     max: {default: 10},
-    step: {default: 1}
+    step: {default: 1},
+    disabled: {default: false}
   },
   data () {
     return {

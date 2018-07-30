@@ -97,6 +97,12 @@
 
   progress-bars(:bars='queryStatus.polling.data.bars', :order="orderedProgressBars",
                 v-if='queryStatus.polling.inProgress && queryStatus.polling.data')
+  .pre-results(v-if='queryStatus.polling.inProgress && queryStatus.polling.data')
+    center
+      p(v-if="queryStatus.polling.data.price").
+        Total cost: {{queryStatus.polling.data.price.toFixed(0)}} $
+      p(v-if="queryStatus.polling.data.lead_time").
+        Lead time: {{queryStatus.polling.data.lead_time.toFixed(0)}} days
 
   .results(v-if='!queryStatus.polling.inProgress && queryStatus.polling.data')
     hr

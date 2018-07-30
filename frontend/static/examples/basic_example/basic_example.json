@@ -61,7 +61,9 @@
     "use_astar": true,
     "grain_type": "manual",
     "coarse_grain": 100,
-    "fine_grain": 10
+    "fine_grain": 10,
+    "use_size_range": false,
+    "size_range": [200, 10000]
    }
   },
   "4": {

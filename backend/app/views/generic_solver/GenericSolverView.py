@@ -104,8 +104,22 @@ class worker_class(AsyncWorker):
                 'accepted': False,
                 'success': True
             }
-        quote.compute_full_assembly_tree()
-        quote.compute_fragments_final_locations()
+        self.logger(price=quote.price)
+        self.logger(lead_time=quote.lead_time)
+        self.logger(message="Computing assembly details...")
+        try:
+            quote.compute_full_assembly_tree()
+            quote.compute_fragments_final_locations()
+        except:
+            json_quote = JsonQuote.from_dnaweaver_quote(quote)
+            return {
+               'message': 'Failed to compute details',
+               'success': True,
+               'accepted': True,
+               'assembly_tree': json_quote.tree
+            }
+
+        self.logger(message="Writing the report...")
         json_quote = JsonQuote.from_dnaweaver_quote(quote)
         autocolor_quote_sources(json_quote)
         report_data = make_folder_report(json_quote, target='@memory')

@@ -41,7 +41,9 @@
     "use_astar": true,
     "grain_type": "manual",
     "coarse_grain": 300,
-    "fine_grain": 0
+    "fine_grain": 0,
+    "use_size_range": false,
+    "size_range": [200, 10000]
    }
   },
   "aa6a04c0-9358-11e8-aa37-03ab2baf1612": {
@@ -74,7 +76,9 @@
     "use_astar": true,
     "grain_type": "manual",
     "coarse_grain": 400,
-    "fine_grain": 0
+    "fine_grain": 0,
+    "use_size_range": false,
+    "size_range": [200, 10000]
    }
   },
   "abd0c0b0-9358-11e8-aa37-03ab2baf1612": {
@@ -175,7 +179,9 @@
     "use_astar": true,
     "grain_type": "manual",
     "coarse_grain": 20,
-    "fine_grain": 0
+    "fine_grain": 0,
+    "use_size_range": true,
+    "size_range": [100, 1500]
    }
   },
   "bed20480-9358-11e8-aa37-03ab2baf1612": {
@@ -230,7 +236,9 @@
     "use_astar": true,
     "grain_type": "manual",
     "coarse_grain": 1000,
-    "fine_grain": 0
+    "fine_grain": 0,
+    "use_size_range": false,
+    "size_range": [0, 100000]
    }
   }
  },
