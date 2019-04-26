@@ -75,7 +75,7 @@ class worker_class(AsyncWorker):
                 'main': DnaSourcesComparator
             }[supplier_data["type"]].from_dict(supplier_data['parameters'])
             if (supplier_data["type"] == 'assembly'):
-                if levels[main_id] - levels[supplier_id] > 2:
+                if levels[main_id] - levels[supplier_id] > 1:
                     logger = None
                 else:
                     logger = self.logger
@@ -86,6 +86,11 @@ class worker_class(AsyncWorker):
 
         self.logger(message="Exploring strategies...")
         main = suppliers_dict[main_id]
+        # for name, supp in suppliers_dict.items():
+        #     if hasattr(supp, 'solve_kwargs') and name != main_id:
+        #         supp.solve_kwargs['logger'] = None
+        #         print (name, supp)
+
         if data['optimization'] == 'cheapest_with_deadline':
             max_lead_time = data['deadline']
         else:
