@@ -103,9 +103,14 @@
         Total cost: {{queryStatus.polling.data.price.toFixed(0)}} $
       p(v-if="queryStatus.polling.data.lead_time").
         Lead time: {{queryStatus.polling.data.lead_time.toFixed(0)}} days
+  .assembly-figure(v-if='queryStatus.polling.data')
+    hr
+    center
+      img(v-if='queryStatus.polling.data.figure_data',
+          :src='queryStatus.polling.data.figure_data',
+          style='max-width: 700px;')
 
   .results(v-if='!queryStatus.polling.inProgress && queryStatus.polling.data')
-    hr
     p(v-if='!queryStatus.result.accepted').
       No assembly plan found. Try editing the sequence or the supply graph.
     .assembly-plan(v-if='queryStatus.result.accepted')
@@ -114,11 +119,6 @@
         p Total cost: {{queryStatus.result.assembly_tree.price.toFixed(0)}} $
         p Lead time: {{queryStatus.result.assembly_tree.lead_time.toFixed(0)}} days
         p Complexity: {{assemblyTreeOperations}} operations
-      .assembly-figure
-        center
-          img(v-if='queryStatus.result.assembly_figure_data',
-              :src='queryStatus.result.assembly_figure_data',
-              style='max-width: 700px;')
 
       download-button(v-if='queryStatus.result.assembly_report',
                       text='Full assembly report',

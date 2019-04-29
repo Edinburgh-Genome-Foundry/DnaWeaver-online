@@ -80,8 +80,6 @@ class worker_class(AsyncWorker):
                 else:
                     logger = self.logger
                 supplier.solve_kwargs['logger'] = logger
-            if (supplier_data["type"] == 'pcr'):
-                supplier.pre_blast(sequence)
             supplier.memoize = True
 
         self.logger(message="Exploring strategies...")
@@ -99,6 +97,7 @@ class worker_class(AsyncWorker):
             max_price = data['budget']
         else:
             max_price = None
+        main.prepare_network_on_sequence(sequence)
         quote = main.get_quote(
             sequence,
             max_lead_time=max_lead_time,
@@ -123,22 +122,23 @@ class worker_class(AsyncWorker):
                'accepted': True,
                'assembly_tree': json_quote.tree
             }
+       
 
         self.logger(message="Writing the report...")
         json_quote = JsonQuote.from_dnaweaver_quote(quote)
         autocolor_quote_sources(json_quote)
-        report_data = make_folder_report(json_quote, target='@memory')
-
         ax, _ = plot_assembly_blocks(json_quote, backend="matplotlib",
                                      plot_top_assembly=False,
                                      ax=None, parts_offset=0.1, legend=True)
         ax.figure.set_size_inches((7, 4))
         ax.figure.subplots_adjust(bottom=0.3)
+        self.logger(figure_data=matplotlib_figure_to_svg_base64_data(
+                ax.figure, bbox_inches='tight'))
+        report_data = make_folder_report(json_quote, target='@memory')
+        
         return {
             'accepted': True,
             'assembly_tree': json_quote.tree,
-            'assembly_figure_data': matplotlib_figure_to_svg_base64_data(
-                ax.figure, bbox_inches='tight'),
             'assembly_report': {
                 'data': data_to_html_data(report_data, 'zip'),
                 'name': 'sequence_decomposition_report.zip',
