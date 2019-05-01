@@ -26,8 +26,8 @@
     "max_fragments": 10,
     "enzyme": "BsmBI",
     "fragments_size_range": [
-     1020,
-     4080
+     1000,
+     4000
     ],
     "overhang_type": "fixed_size",
     "tm_range": [
@@ -164,8 +164,8 @@
     "max_fragments": 10,
     "enzyme": "BsmBI",
     "fragments_size_range": [
-     20,
-     180
+     40,
+     200
     ],
     "overhang_type": "tm",
     "tm_range": [
@@ -221,8 +221,8 @@
     "max_fragments": 10,
     "enzyme": "BsmBI",
     "fragments_size_range": [
-     6980,
-     24820
+     7000,
+     25000
     ],
     "overhang_type": "fixed_size",
     "tm_range": [
@@ -235,7 +235,7 @@
     ],
     "use_astar": true,
     "grain_type": "manual",
-    "coarse_grain": 1000,
+    "coarse_grain": 1500,
     "fine_grain": 0,
     "use_size_range": false,
     "size_range": [0, 100000]

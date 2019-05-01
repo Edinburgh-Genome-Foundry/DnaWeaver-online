@@ -1,12 +1,7 @@
 <template lang="pug">
 .file-example
-  el-dialog(title="", :visible.sync="dialogVisible" width="80%")
-    center
-      img.big-image(v-if='imgSrc', :src='imgSrc')
-
   el-card
     center
-      img.small-image(v-if='imgSrc', :src='imgSrc' @click="dialogVisible = true")
       h3
         .filename {{dataFilename}}
       el-row(:gutter='60')
@@ -17,8 +12,9 @@
         el-tooltip(content='download this file')
           a(:href='fileHref')
             el-button(icon='el-icon-download' circle)
-    p(v-if='description') {{description}}
-    slot
+    img.small-image(v-if='imgSrc', :src='imgSrc' @click="dialogVisible = true")
+    .description
+      slot
   //- hr
 </template>
 
@@ -68,7 +64,13 @@ export default {
 <style lang='scss' scoped>
 
 .file-example {
-
+  // display: inline-block;
+  // vertical-align: top;
+  // width: 300px;
+  .description {
+    word-break: normal !important;
+    text-align: left;
+  }
   hr {
     margin-bottom: 1em;
     border: 0;
@@ -79,6 +81,7 @@ export default {
   img.small-image {
     max-width: 100%;
     max-height: 9em;
+    margin-top: 2em;
     cursor: pointer;
   }
   img.big-image {

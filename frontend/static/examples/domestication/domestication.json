@@ -40,8 +40,8 @@
     ],
     "use_astar": false,
     "grain_type": "manual",
-    "coarse_grain": 30,
-    "fine_grain": 1,
+    "coarse_grain": 100,
+    "fine_grain": 0,
     "use_size_range": false,
     "size_range": [200, 10000]
    }

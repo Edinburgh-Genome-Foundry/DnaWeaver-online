@@ -28,38 +28,41 @@
           .el-upload__text Drop a JSON file here or <em>click to upload</em>
     el-dialog(title="", :visible.sync="examplesDialogVisible" width="80%")
       center
-        .div(style='max-width:800px;')
-          file-example(filename='Basic Example',
-                         @input="loadExample",
-                         fileHref='/static/examples/basic_example/basic_example.json',
-                         imgSrc='/static/examples/basic_example/basic_example.png')
-            p.
-              A very simple example for quick tests. One sequence, one bit of which can be
-              synthesized by a company, and the other bit by other.
-          file-example(filename='3-step Assembly',
-                       @input="loadExample",
-                       fileHref='/static/examples/three_step/three_step.json',
-                       imgSrc='/static/examples/three_step/three_step.png')
-            p.
-              A 50kb sequence to be built from large fragments or from oligos via a 3-step assembly.
-              Some parts of the sequence can also be obtained from E. coli via PCR.
-              #[a(href="https://www.nature.com/articles/srep10655") Tsuge et al. ]
-              managed to assemble this sequence in a one-step assembly of fifty 1kb
-              fragments, digested by type-IIs enzymes. This required a very careful
-              selection of enzyme overhangs.
-          file-example(filename='Domestication Example',
-                       @input="loadExample",
-                       fileHref='/static/examples/domestication/domestication.json',
-                       imgSrc='/static/examples/domestication/domestication.png')
-            p.
-              DNA Weaver can be used for many things, at the condition of designing
-              the right supply network. Here we show how to use DNA Weaver to create
-              PCR plans for part domestication.
-              A gene sequence of E. coli has been optimized to be rid of two BsmBI
-              sites in the wildtype sequence. We will construct the optimized gene
-              by assembling 3 PCR products from the E. coli chromosome. The PCRs
-              are done with custom primers whose non-annealing parts incur sequence
-              modifications and remove the BsmBI sites via synonymous codon juggling.
+        el-row(:gutter='10', style='width: 90%; max-width:1000px;')
+          el-col(:xs='24', :sm='12', :lg='8')
+            file-example(filename='Basic Example',
+                          @input="loadExample",
+                          fileHref='/static/examples/basic_example/basic_example.json',
+                          imgSrc='/static/examples/basic_example/basic_example.png')
+              p.
+                A very simple example for quick tests. One sequence, one bit of which can be
+                synthesized by a company, and the other bit by other.
+          el-col(:xs='24', :sm='12', :lg='8')
+            file-example(filename='3-step Assembly',
+                        @input="loadExample",
+                        fileHref='/static/examples/three_step/three_step.json',
+                        imgSrc='/static/examples/three_step/three_step.png')
+              p.
+                A 50kb sequence to be built from large fragments or from oligos via a 3-step assembly.
+                Some parts of the sequence can also be obtained from E. coli via PCR.
+                #[a(href="https://www.nature.com/articles/srep10655") Tsuge et al. ]
+                managed to assemble this sequence in a one-step assembly of fifty 1kb
+                fragments, digested by type-IIs enzymes. This required a very careful
+                selection of enzyme overhangs.
+          el-col(:xs='24', :sm='12', :lg='8')
+            file-example(filename='Domestication Example',
+                        @input="loadExample",
+                        fileHref='/static/examples/domestication/domestication.json',
+                        imgSrc='/static/examples/domestication/domestication.png')
+              p.
+                DNA Weaver can be used for many things, at the condition of designing
+                the right supply network. Here we show how to use DNA Weaver to create
+                PCR plans for part domestication.
+                A gene sequence of E. coli has been optimized to be rid of two BsmBI
+                sites in the wildtype sequence. We will construct the optimized gene
+                by assembling 3 PCR products from the E. coli chromosome. The PCRs
+                are done with custom primers whose non-annealing parts incur sequence
+                modifications and remove the BsmBI sites via synonymous codon juggling.
   .graph
     graph(v-model='form.graph', :options='options')
   .form
