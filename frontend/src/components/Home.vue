@@ -104,7 +104,7 @@
   .pre-results(v-if='queryStatus.polling.inProgress && queryStatus.polling.data')
     center
       h2(v-if="queryStatus.polling.data.price") Assembly Plan
-      .assembly-stats 
+      .assembly-stats
         p(v-if="queryStatus.polling.data.price").
           Total cost: {{queryStatus.polling.data.price.toFixed(0)}} $
         p(v-if="queryStatus.polling.data.lead_time").
@@ -123,10 +123,10 @@
                     text='Full assembly report',
                     :filedata='queryStatus.result.assembly_report')
   .assembly-figure(v-if='queryStatus.polling.data')
-  center
-    img(v-if='queryStatus.polling.data.figure_data',
-        :src='queryStatus.polling.data.figure_data',
-        style='max-width: 700px;')
+    center
+      img(v-if='queryStatus.polling.data.figure_data',
+          :src='queryStatus.polling.data.figure_data',
+          style='max-width: 700px;')
 </template>
 
 <script>

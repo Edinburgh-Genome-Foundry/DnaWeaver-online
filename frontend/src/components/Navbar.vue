@@ -3,10 +3,10 @@
   .logo
     router-link(to='home')
       img(src='../assets/images/dna_weaver_logo.svg')
-  el-menu(mode='horizontal')
-    el-menu-item(index='home') Home
-    el-menu-item(index='help') Help
-    el-menu-item(index='about') About
+  //- el-menu(mode='horizontal')
+  //-   el-menu-item(index='home') Home
+  //-   el-menu-item(index='help') Help
+  //-   el-menu-item(index='about') About
 </template>
 
 <style lang='scss' scoped>
@@ -31,7 +31,7 @@
 
 .logo {
   display: block;
-  height:75px;
+  height:80px;
   img {
     height:100%;
   }

@@ -47,58 +47,6 @@ class worker_class(AsyncWorker):
                 supplier.solver_kwargs.update(dict(
                     logger=logger,
                 ))
-        # def sort_suppliers(graph_data):
-        #     supply_graph = nx.DiGraph([
-        #         (supplier, supplier_id)
-        #         for supplier_id, supplier_data in graph_data.items()
-        #         for supplier in supplier_data['suppliers']
-        #     ])
-        #     sorted_suppliers = []
-        #     level = 0
-        #     levels = {}
-
-        #     while len(supply_graph):
-        #         level += 1
-        #         independant_suppliers = [
-        #             n for n in supply_graph.nodes()
-        #             if len(nx.ancestors(supply_graph, n)) == 0
-        #         ]
-        #         for supp in independant_suppliers:
-        #             levels[supp] = level
-        #         sorted_suppliers.extend(independant_suppliers)
-        #         supply_graph.remove_nodes_from(independant_suppliers)
-        #     return sorted_suppliers, levels
-
-        # sorted_suppliers, levels = sort_suppliers(data['graph'])
-        # main_id = sorted_suppliers[-1]
-
-        # suppliers_dict = {}
-        # for supplier_id in sorted_suppliers:
-        #     supplier_data = data['graph'][supplier_id]
-        #     supplier_data['parameters']["name"] = supplier_data["name"]
-        #     supplier_data['parameters']['suppliers'] = [
-        #         suppliers_dict[supp_id]
-        #         for supp_id in supplier_data['suppliers']
-        #     ]
-        #     supplier = suppliers_dict[supplier_id] = {
-        #         'commercial':  CommercialDnaOffer,
-        #         'assembly': DnaAssemblyStation,
-        #         'library': PartsLibrary,
-        #         'pcr': PcrOutStation,
-        #         'comparator': DnaSourcesComparator,
-        #         'main': DnaSourcesComparator
-        #     }[supplier_data["type"]].from_dict(supplier_data['parameters'])
-        #     if (supplier_data["type"] == 'assembly'):
-        #         if levels[main_id] - levels[supplier_id] > 1:
-        #             logger = None
-        #         else:
-        #             logger = self.logger
-        #         supplier.solve_kwargs['logger'] = logger
-        #     supplier.memoize = True
-
-        # self.logger(message="Exploring strategies...")
-        # main = suppliers_dict[main_id]
-
         if data['optimization'] == 'cheapest_with_deadline':
             max_lead_time = data['deadline']
         else:
@@ -107,6 +55,7 @@ class worker_class(AsyncWorker):
             max_price = data['budget']
         else:
             max_price = None
+        self.logger(message="Finding the best strategy...")
         main.prepare_network_on_sequence(sequence)
         quote = main.get_quote(
             sequence,
