@@ -4,14 +4,9 @@
     center
       h3
         .filename {{dataFilename}}
-      el-row(:gutter='60')
-        span.use-file(v-if='useFileButton')
+        p.use-file(v-if='useFileButton')
           el-tooltip(content='use this file')
-            el-button(icon='el-icon-plus' @click='loadFile()' circle)
-        span &nbsp;
-        el-tooltip(content='download this file')
-          a(:href='fileHref')
-            el-button(icon='el-icon-download' circle)
+            el-button(@click='loadFile()') Go!
     img.small-image(v-if='imgSrc', :src='imgSrc' @click="dialogVisible = true")
     .description
       slot

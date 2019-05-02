@@ -235,7 +235,7 @@
     ],
     "use_astar": true,
     "grain_type": "manual",
-    "coarse_grain": 1500,
+    "coarse_grain": 2000,
     "fine_grain": 0,
     "use_size_range": false,
     "size_range": [0, 100000]

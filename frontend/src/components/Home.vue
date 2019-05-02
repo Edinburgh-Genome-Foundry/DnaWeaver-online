@@ -1,7 +1,7 @@
 <template lang='pug'>
 .page
   .graphio
-    el-tooltip(class="item" content="Save current state" placement="bottom")
+    el-tooltip(class="item" content="Download current state for later use" placement="bottom")
       el-button.file-link(
         @click="download(JSON.stringify(form, null, ' '), 'dnaweaver_state.json')" icon='el-icon-download'
         circle)
@@ -13,8 +13,7 @@
     el-tooltip(class="item" content="Load an example" placement="bottom")
       el-button.file-link(
         @click='examplesDialogVisible = true'
-        icon='el-icon-more'
-        circle)
+        ) Load and example
     el-dialog(title="", :visible.sync="uploadStateDialogVisible" width="80%")
       center
         h4 Upload a saved state
@@ -28,8 +27,10 @@
           .el-upload__text Drop a JSON file here or <em>click to upload</em>
     el-dialog(title="", :visible.sync="examplesDialogVisible" width="80%")
       center
-        el-row(:gutter='10', style='width: 90%; max-width:1000px;')
-          el-col(:xs='24', :sm='12', :lg='8')
+        //- el-row(:gutter='10', style='width: 90%; max-width:1000px;')
+        el-carousel(type='card', height="500px" :autoplay='false',
+                    :loop='false' :initial-index='1')
+          el-carousel-item
             file-example(filename='Basic Example',
                           @input="loadExample",
                           fileHref='/static/examples/basic_example/basic_example.json',
@@ -37,7 +38,7 @@
               p.
                 A very simple example for quick tests. One sequence, one bit of which can be
                 synthesized by a company, and the other bit by other.
-          el-col(:xs='24', :sm='12', :lg='8')
+          el-carousel-item
             file-example(filename='3-step Assembly',
                         @input="loadExample",
                         fileHref='/static/examples/three_step/three_step.json',
@@ -49,7 +50,7 @@
                 managed to assemble this sequence in a one-step assembly of fifty 1kb
                 fragments, digested by type-IIs enzymes. This required a very careful
                 selection of enzyme overhangs.
-          el-col(:xs='24', :sm='12', :lg='8')
+          el-carousel-item
             file-example(filename='Domestication Example',
                         @input="loadExample",
                         fileHref='/static/examples/domestication/domestication.json',
@@ -102,30 +103,30 @@
                 v-if='queryStatus.polling.inProgress && queryStatus.polling.data')
   .pre-results(v-if='queryStatus.polling.inProgress && queryStatus.polling.data')
     center
-      p(v-if="queryStatus.polling.data.price").
-        Total cost: {{queryStatus.polling.data.price.toFixed(0)}} $
-      p(v-if="queryStatus.polling.data.lead_time").
-        Lead time: {{queryStatus.polling.data.lead_time.toFixed(0)}} days
-  .assembly-figure(v-if='queryStatus.polling.data')
-    hr
-    center
-      img(v-if='queryStatus.polling.data.figure_data',
-          :src='queryStatus.polling.data.figure_data',
-          style='max-width: 700px;')
+      h2(v-if="queryStatus.polling.data.price") Assembly Plan
+      .assembly-stats 
+        p(v-if="queryStatus.polling.data.price").
+          Total cost: {{queryStatus.polling.data.price.toFixed(0)}} $
+        p(v-if="queryStatus.polling.data.lead_time").
+          Lead time: {{queryStatus.polling.data.lead_time.toFixed(0)}} days
 
   .results(v-if='!queryStatus.polling.inProgress && queryStatus.polling.data')
-    p(v-if='!queryStatus.result.accepted').
-      No assembly plan found. Try editing the sequence or the supply graph.
     .assembly-plan(v-if='queryStatus.result.accepted')
       h2 Assembly Plan
       .assembly-stats
         p Total cost: {{queryStatus.result.assembly_tree.price.toFixed(0)}} $
         p Lead time: {{queryStatus.result.assembly_tree.lead_time.toFixed(0)}} days
         p Complexity: {{assemblyTreeOperations}} operations
-
-      download-button(v-if='queryStatus.result.assembly_report',
-                      text='Full assembly report',
-                      :filedata='queryStatus.result.assembly_report')
+    p(v-if='!queryStatus.result.accepted').
+      No assembly plan found. Try editing the sequence or the supply graph.
+    download-button(v-if='queryStatus.result.assembly_report',
+                    text='Full assembly report',
+                    :filedata='queryStatus.result.assembly_report')
+  .assembly-figure(v-if='queryStatus.polling.data')
+  center
+    img(v-if='queryStatus.polling.data.figure_data',
+        :src='queryStatus.polling.data.figure_data',
+        style='max-width: 700px;')
 </template>
 
 <script>
