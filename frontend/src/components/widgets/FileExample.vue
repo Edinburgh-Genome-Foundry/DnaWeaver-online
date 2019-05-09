@@ -34,10 +34,8 @@ export default {
   },
   methods: {
     loadFile () {
-      console.log('loadfile')
       var self = this
       this.$http.get(this.fileHref, {responseType: 'blob'}).then(function (response) {
-        console.log(response)
         var reader = new window.FileReader()
         reader.onloadend = function (ev) {
           if (ev.target.readyState === window.FileReader.DONE) {

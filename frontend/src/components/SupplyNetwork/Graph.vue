@@ -45,7 +45,6 @@ export default {
       var g = new dagre.graphlib.Graph()
         .setGraph(this.options.dagre)
         .setDefaultEdgeLabel(function () { return {} })
-      console.log(this.nodes)
       for (var nodeId in this.nodes) {
         var node = this.nodes[nodeId]
         g.setNode(nodeId, {
@@ -54,7 +53,6 @@ export default {
         })
         for (var sourceId of node.suppliers) {
           g.setEdge(sourceId, nodeId)
-          console.log(sourceId, nodeId)
         }
       }
       dagre.layout(g)
@@ -78,9 +76,7 @@ export default {
           maxX = Math.max(maxX, p.x)
           minX = Math.min(minX, p.x)
         }
-        console.log(g.edge(e).points)
       })
-      console.log(layout)
       layout.viewBox = `${minX} 0 ${maxX - minX} ${layout.height}`
       layout.width = maxX - minX
       this.layout = layout

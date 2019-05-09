@@ -27,7 +27,6 @@ export default {
     submitTrigger: {default: false}
   },
   data () {
-    console.log(this.backendIP === 'auto' ? this.computeBackendIP() : this.backendIP)
     return {
       honeypot: '',
       backendRoot: this.backendIP === 'auto' ? this.computeBackendIP() : this.backendIP,
@@ -54,7 +53,6 @@ export default {
     },
     status: {
       handler (val) {
-        console.log(val)
         this.$emit('input', val)
       },
       deep: true
@@ -95,7 +93,6 @@ export default {
         this.startPolling(response.body.job_id)
       }, function (response) {
         // FAILURE OF THE JOB STARTING
-        console.log('job-start error response', response)
         this.status.requestError = 'Failed with status ' + response.status
         this.status.polling.inProgress = false
         if (response.status === 400) {

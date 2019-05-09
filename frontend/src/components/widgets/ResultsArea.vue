@@ -32,7 +32,6 @@ export default {
     validate_form: {default: () => () => ([])}
   },
   data () {
-    console.log(this.backendIP === 'auto' ? this.computeBackendIP() : this.backendIP)
     return {
       honeypot: '',
       backendRoot: this.backendIP === 'auto' ? this.computeBackendIP() : this.backendIP,
@@ -53,7 +52,6 @@ export default {
   watch: {
     form: {
       handler (val) {
-        console.log(val)
         this.$emit('input', val)
       },
       deep: true

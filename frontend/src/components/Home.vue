@@ -64,6 +64,16 @@
                 by assembling 3 PCR products from the E. coli chromosome. The PCRs
                 are done with custom primers whose non-annealing parts incur sequence
                 modifications and remove the BsmBI sites via synonymous codon juggling.
+          el-carousel-item
+            file-example(filename='Parts Reuse Example',
+                        @input="loadExample",
+                        fileHref='/static/examples/parts_reuse/parts_reuse.json',
+                        imgSrc='/static/examples/parts_reuse/parts_reuse.png')
+              p.
+                In this example a sequence is made via Golden Gate from parts
+                of different origins: some are bought from a commercial provider,
+                some are taken from the EMMA assembly standard, and some are
+                extracted from a genome.
   .graph
     graph(v-model='form.graph', :options='options')
   .form

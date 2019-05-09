@@ -54,7 +54,6 @@ export default {
     options: {default: () => ({})}
   },
   data () {
-    console.log('PARAAAAMS', this.value.parameters)
     return {
       nodeData: this.value,
       nodeInfos: Object.assign({}, suppliersInfos.default, suppliersInfos[this.value.type]),

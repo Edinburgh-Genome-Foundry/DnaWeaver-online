@@ -17,6 +17,10 @@ from dnaweaver.reports import (JsonQuote, make_folder_report,
 PcrOutStation.dna_banks = {
     'e_coli': os.path.join("app", "data", "blastdb", "e_coli", "ecoli")
 }
+PartsLibrary.collections_by_id['EMMA'] = dict(
+    library_class='golden_gate',
+    fasta_file=os.path.join("app", "data", "emma_parts.fa")
+)
 
 class serializer_class(serializers.Serializer):
     sequence_file = FileSerializer(allow_null=True)

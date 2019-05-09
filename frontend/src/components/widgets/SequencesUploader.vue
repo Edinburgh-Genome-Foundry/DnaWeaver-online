@@ -42,9 +42,6 @@ export default {
         self.circularities.push(true)
       })
     },
-    circularities (val) {
-      console.log(val)
-    },
     filesWithLinearities (val) {
       this.$emit('input', this.multiple ? val : val[0])
     }
