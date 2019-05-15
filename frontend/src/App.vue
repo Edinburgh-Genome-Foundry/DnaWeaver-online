@@ -1,5 +1,6 @@
 <template lang='pug'>
 #website
+  github-corners(repo="Edinburgh-Genome-Foundry/dnaweaver" bg-color='#8ac1e8')
   .page
     navbar
   router-view

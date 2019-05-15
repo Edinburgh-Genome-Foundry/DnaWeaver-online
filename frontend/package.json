@@ -22,6 +22,7 @@
     "@fortawesome/free-solid-svg-icons": "5.1.0",
     "@fortawesome/vue-fontawesome": "0.1.0",
     "@fortawesome/fontawesome-svg-core": "1.2.0",
+    "vue-gh-corners": "2.0.0",
     "dagre": "^0.8.2",
     "dagre-d3": "^0.6.1",
     "downloadjs": "^1.4.7",

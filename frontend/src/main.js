@@ -11,6 +11,10 @@ import VueResource from 'vue-resource'
 
 import './fontawesome-icons'
 
+import VueGitHubCorners from 'vue-gh-corners'
+import 'vue-gh-corners/dist/vue-github-corners.css'
+Vue.use(VueGitHubCorners)
+
 Vue.use(ElementUI)
 Vue.use(VTooltip)
 Vue.use(widgets)
