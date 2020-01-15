@@ -13,7 +13,7 @@
     el-tooltip(class="item" content="Load an example" placement="bottom")
       el-button.file-link(
         @click='examplesDialogVisible = true'
-        ) Load and example
+        ) Load an example
     el-dialog(title="", :visible.sync="uploadStateDialogVisible" width="80%")
       center
         h4 Upload a saved state
