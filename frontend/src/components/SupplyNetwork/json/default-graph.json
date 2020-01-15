@@ -31,7 +31,7 @@
       "cost": 40,
       "duration": 7,
       "overlap": 40,
-      "overhang_type": "tm",
+      "homology_type": "tm",
       "tm_range": [55, 70],
       "overhang_size_range": [15, 30],
       "max_fragments": 10,

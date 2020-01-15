@@ -29,14 +29,13 @@
     "defaultName": "Assembly station",
     "defaultParameters": {
       "method": "gibson_assembly",
-      "overlap": 40,
       "cost": 20,
       "duration": 7,
       "max_fragments": 10,
       "enzyme": "BsmBI",
       "fragments_size_range": [100, 5000],
       "overlap": 40,
-      "overhang_type": "tm",
+      "homology_type": "tm",
       "tm_range": [55, 70],
       "overhang_size_range": [15, 30],
       "use_astar": true,
@@ -67,7 +66,11 @@
       "pcr_homology_length": 25,
       "max_overhang_length": 40,
       "max_amplicon_length": 10000,
-      "dna_bank": "e_coli"
+      "dna_bank": "e_coli",
+      "homology_size_range": [18, 22],
+      "tm_range": [55, 65],
+      "homology_type": "tm",
+      "homology_size": 20
     }
   },
   "comparator": {

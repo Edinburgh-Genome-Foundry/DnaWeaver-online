@@ -9,12 +9,12 @@ from ..tools import (records_from_data_files, data_to_html_data,
 from ..serializers import FileSerializer
 import networkx as nx
 from dnaweaver import (CommercialDnaOffer, DnaAssemblyStation, PartsLibrary,
-                       PcrOutStation, DnaSourcesComparator,
+                       PcrExtractionStation,
                        supply_network_from_json)
 from dnaweaver.reports import (JsonQuote, make_folder_report,
                                autocolor_quote_sources, plot_assembly_blocks)
 
-PcrOutStation.dna_banks = {
+PcrExtractionStation.dna_banks = {
     'e_coli': os.path.join("app", "data", "blastdb", "e_coli", "ecoli")
 }
 PartsLibrary.collections_by_id['EMMA'] = dict(

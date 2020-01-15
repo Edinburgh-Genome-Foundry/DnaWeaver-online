@@ -29,7 +29,7 @@
      1020,
      4080
     ],
-    "overhang_type": "fixed_size",
+    "homology_type": "fixed_size",
     "tm_range": [
      55,
      70
@@ -62,7 +62,7 @@
      1135,
      3965
     ],
-    "overhang_type": "tm",
+    "homology_type": "tm",
     "tm_range": [
      55,
      70
@@ -163,7 +163,7 @@
      20,
      180
     ],
-    "overhang_type": "tm",
+    "homology_type": "tm",
     "tm_range": [
      50,
      70
@@ -218,7 +218,7 @@
      6980,
      24820
     ],
-    "overhang_type": "fixed_size",
+    "homology_type": "fixed_size",
     "tm_range": [
      55,
      70
