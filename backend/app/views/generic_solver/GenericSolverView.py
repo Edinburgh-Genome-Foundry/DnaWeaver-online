@@ -48,7 +48,7 @@ class worker_class(AsyncWorker):
                     logger = None
                 else:
                     logger = self.logger
-                supplier.solver_kwargs.update(dict(logger=logger,))
+                supplier.solver_kwargs.update(dict(logger=logger))
         if data["optimization"] == "cheapest_with_deadline":
             max_lead_time = data["deadline"]
         else:

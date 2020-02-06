@@ -221,7 +221,6 @@ export default {
             result.push(s)
           }
         })
-        console.log(result)
         return result
       } else {
         return []
