@@ -11,7 +11,7 @@ redis==2.10.5
 rq==0.6.0
 requests==2.11.1
 watchdog==0.8.3
-WeasyPrint==0.42.3
+WeasyPrint==51
 matplotlib==2.1.0
 pandas==0.23.3
 
