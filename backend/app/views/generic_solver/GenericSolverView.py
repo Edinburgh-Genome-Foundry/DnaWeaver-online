@@ -70,6 +70,8 @@ class worker_class(AsyncWorker):
         self.logger(price=quote.price)
         self.logger(lead_time=quote.lead_time)
         self.logger(message="Computing assembly details...")
+        for supplier in suppliers_dict.values():
+            supplier.logger = None
         try:
             assembly_plan_report = quote.to_assembly_plan_report()
         except:

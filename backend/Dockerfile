@@ -41,6 +41,6 @@ RUN pip install -r requirements.txt
 
 ADD . /code/
 
-ARG CACHEBUST=7
+ARG CACHEBUST=8
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/DnaWeaver
 # RUN pip install biopython==1.70
