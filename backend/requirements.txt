@@ -13,7 +13,7 @@ requests==2.11.1
 watchdog==0.8.3
 WeasyPrint==51
 matplotlib==2.1.0
-pandas==0.23.3
+pandas==1.0.0
 
 git+https://github.com/pygraphviz/pygraphviz.git
 git+https://github.com/networkx/networkx.git
